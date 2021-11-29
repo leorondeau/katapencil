@@ -63,6 +63,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
                 else:
                     response = f"{get_all_journals()}"
+                    
+        self.wfile.write(response.encode())
         
 
 def main():
