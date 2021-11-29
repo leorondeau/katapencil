@@ -3,6 +3,32 @@ import json
 from models import Journal
 
 
+def get_all_journals():
+    
+    with sqlite3.connect("./katapencil.db") as conn:
+
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            j.id, 
+            j.entry
+        FROM journal j
+        """)
+
+        journals = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+
+            journal = Journal(row['id'], row['entry'])
+
+            journals.append(journal.__dict__)
+
+        return json.dumps(journals)
+    
 def get_single_journal(id):
     with sqlite3.connect("./katapencil.db") as conn:
         conn.row_factory = sqlite3.Row
